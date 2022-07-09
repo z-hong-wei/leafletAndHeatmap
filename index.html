@@ -1,0 +1,114 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- leaflet网络资源 -->
+    <!-- <link rel="stylesheet" href="./dist/leaflet/iclient-leaflet.css">
+    <script src="./dist/leaflet/iclient-leaflet.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script> -->
+
+    <!-- leaflet本地资源 -->
+    <link rel="stylesheet" href="./resourse/leaflet.css">
+    <script src="./resourse/leaflet.js"></script>
+
+    <!-- heatmap本地资源 -->
+    <!-- <script src="./dist/Leaflet.heat-gh-pages/dist/leaflet-heat.js"></script> -->
+    <script src="./resourse/leaflet-heat.js"></script>
+    <style>
+        #map{
+            width: 100%;
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        window.onload = function(){
+            let map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [39.919636902004605, 116.56042423254671],
+                maxZoom: 18,
+                zoom: 11
+            });
+
+
+            //叠加天地图
+            L.tileLayer("http://t1.tianditu.com/vec_c/wmts?layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=93724b915d1898d946ca7dc7b765dda5", {
+                maxZoom: 17,
+                tileSize: 256,
+                zoomOffset: 1,
+                minZoom: 3,
+            }).addTo(map);
+            //添加注记
+            L.tileLayer("http://t1.tianditu.com/cva_c/wmts?layer=cva&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=93724b915d1898d946ca7dc7b765dda5", {
+            maxZoom: 17,
+            tileSize: 256,
+            zoomOffset: 1,
+            zIndex:0,
+            minZoom: 3,
+            }).addTo(map);
+
+
+
+            // var heat = L.heatLayer([
+            //     [39.919636902004605, 116.56042423254671, 57.27852976394749],// lat, lng, intensity
+            //     [39.878801662151645, 116.61800158010274, 66.1836859360953],
+            //     [39.90649202626386, 116.36274306654792, 22.645476147539725],
+            //     [40.02794845994343, 116.27706747646462, 74.15855763827017],
+            //     [39.83994351304049, 116.45293434650725, 68.75582936174567],
+            //     [40.044747131457214, 116.44714280706424, 45.86353092250363],
+            //     [40.00044763515426, 116.53649905183408, 10.084097272320456],
+            //     [39.8530069352381, 116.4445320778388, 42.18710312285353],
+            //     [39.85640580064399, 116.27957394675134, 37.329400893765424],
+            //     [40.0486068428916, 116.48358894239807, 24.24042709825251],
+            //     [39.917979677977826, 116.36287839604627, 33.46304332506547],
+            //     [39.82014615259764, 116.31076503395195, 44.63399692606073],
+            // ], {radius: 25}).addTo(map);
+
+            let heatNumbers = 150;
+            let heatRadius = 30;
+
+            var heatPoints = [];
+            for (var i = 0; i < heatNumbers; i++) {
+                heatPoints[i] = [Math.random() * 0.28 + 39.78, Math.random() * 0.5 + 116.12, Math.random() * 80];
+            }
+
+            var heat = L.heatLayer(heatPoints, {radius: heatRadius}).addTo(map);
+
+            // L.heatLayer()已生效
+            console.log(L.heatLayer)
+
+            // 查看热力点构成，上面注释的是截取的一部分，把自己数据按照这个格式修改即可。
+            console.log(heatPoints)
+
+            var marker = L.marker([39.919636902004605, 116.56042423254671]).addTo(map);
+
+            var circle = L.circle([39.919636902004605, 116.56042423254671], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 500
+            }).addTo(map);
+
+            var polygon = L.polygon([
+                [51.509, -0.08],
+                [51.503, -0.06],
+                [51.51, -0.047]
+            ]).addTo(mymap);
+                   
+        }
+    </script>
+</body>
+</html>
